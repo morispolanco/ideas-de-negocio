@@ -1,25 +1,38 @@
-import random
+import openai
+openai.api_key = "{API_KEY}"  # Replace "{API_KEY}" with your OpenAI API key
 
-def negocio_ideal(capital_inicial, tiempo_retorno):
-    negocios = [
-        "Invertir en bienes raíces",
-        "Abrir una tienda en línea",
-        "Empezar un negocio de consultoría",
-        "Crear una aplicación móvil",
-        "Montar un restaurante",
-        "Iniciar un negocio de dropshipping",
-        "Crear una tienda de ropa",
-        "Empezar un negocio de marketing digital",
-        "Montar una empresa de alquiler de bicicletas",
-        "Crear una agencia de viajes"
-    ]
+def generate_business_ideas(capital, time_frame):
+    # Generate business ideas using OpenAI's ChatGPT-3.5-turbo
+    prompt = f"What are some profitable business ideas given an initial capital of ${capital} and an expected return timeframe of {time_frame} months?"
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=100,
+        n=5,  # Generate 5 different business ideas
+        stop=None,
+        temperature=0.7,
+        top_p=None,
+        frequency_penalty=0.0
+    )
 
-    negocio_sugerido = random.choice(negocios)
+    # Extract the generated business ideas from the response
+    business_ideas = [choice['text'].strip() for choice in response['choices']]
 
-    print(f"Según tu capital inicial de {capital_inicial} y el tiempo de retorno esperado de {tiempo_retorno} años, te sugiero considerar el negocio de: {negocio_sugerido}.")
+    return business_ideas
 
-# Prueba del chatbot dado el capital inicial y el tiempo de retorno
-capital = int(input("Ingresa tu capital inicial: "))
-tiempo = int(input("Ingresa el tiempo de retorno esperado (en años): "))
+# Get user input
+api_key = input("Enter your OpenAI API key:")
+capital = input("Enter your initial capital:")
+time_frame = input("Enter the expected return timeframe in months:")
 
-negocio_ideal(capital, tiempo)
+# Set the OpenAI API key
+openai.api_key = api_key
+
+# Generate business ideas
+ideas = generate_business_ideas(capital, time_frame)
+
+# Print the generated business ideas
+print("Here are some profitable business ideas:")
+for i, idea in enumerate(ideas, 1):
+    print(f"Idea {i}: {idea}")
+```
