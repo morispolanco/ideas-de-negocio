@@ -1,5 +1,5 @@
 import openai
-import streamlit as st.
+import streamlit as st
 
 # Configurar la clave de la API de OpenAI
 api_key = st.sidebar.text_input("Enter your OpenAI API key", type="password")
