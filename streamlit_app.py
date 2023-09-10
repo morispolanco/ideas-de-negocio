@@ -1,5 +1,14 @@
 import openai
-openai.api_key = "{API_KEY}"  # Replace "{API_KEY}" with your OpenAI API key
+import streamlit as st.
+
+# Configurar la clave de la API de OpenAI
+api_key = st.sidebar.text_input("Enter your OpenAI API key", type="password")
+
+if not api_key:
+    st.warning("Please enter a valid API key to continue.")
+else:
+    openai.api_key = api_key
+    # Continuar con el resto del código que utiliza la clave de API
 
 def generate_business_ideas(capital, time_frame):
     # Generate business ideas using OpenAI's ChatGPT-3.5-turbo
