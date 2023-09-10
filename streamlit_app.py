@@ -34,8 +34,7 @@ api_key = input("Enter your OpenAI API key:")
 capital = input("Enter your initial capital:")
 time_frame = input("Enter the expected return timeframe in months:")
 
-# Set the OpenAI API key
-openai.api_key = api_key
+
 
 # Generate business ideas
 ideas = generate_business_ideas(capital, time_frame)
@@ -44,4 +43,4 @@ ideas = generate_business_ideas(capital, time_frame)
 print("Here are some profitable business ideas:")
 for i, idea in enumerate(ideas, 1):
     print(f"Idea {i}: {idea}")
-```
+
