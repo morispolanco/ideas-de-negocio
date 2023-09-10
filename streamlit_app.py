@@ -1,5 +1,5 @@
-import openai
 import streamlit as st
+import openai
 
 # Configurar la clave de la API de OpenAI
 api_key = st.sidebar.text_input("Enter your OpenAI API key", type="password")
@@ -10,37 +10,16 @@ else:
     openai.api_key = api_key
     # Continuar con el resto del código que utiliza la clave de API
 
-def generate_business_ideas(capital, time_frame):
-    # Generate business ideas using OpenAI's ChatGPT-3.5-turbo
-    prompt = f"What are some profitable business ideas given an initial capital of ${capital} and an expected return timeframe of {time_frame} months?"
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=100,
-        n=5,  # Generate 5 different business ideas
-        stop=None,
-        temperature=0.7,
-        top_p=None,
-        frequency_penalty=0.0
-    )
+st.title('Generador de ideas de negocio')
 
-    # Extract the generated business ideas from the response
-    business_ideas = [choice['text'].strip() for choice in response['choices']]
+capital_inicial = st.number_input('Capital inicial (en dólares)', min_value=0, value=10000)
+tiempo_retorno = st.number_input('Tiempo esperado de retorno (en meses)', min_value=0, value=12)
 
-    return business_ideas
+prompt = f'Sugiéreme 3 ideas de negocio rentables con un capital inicial de {capital_inicial} dólares y un tiempo de retorno de la inversión de {tiempo_retorno} meses.'
 
-# Get user input
-api_key = input("Enter your OpenAI API key:")
-capital = input("Enter your initial capital:")
-time_frame = input("Enter the expected return timeframe in months:")
+response = openai.Completion.create(engine='text-davinci-003', prompt=prompt, max_tokens=1024)
+ideas = response['choices'][0]['text'].split('\n')
 
-
-
-# Generate business ideas
-ideas = generate_business_ideas(capital, time_frame)
-
-# Print the generated business ideas
-print("Here are some profitable business ideas:")
-for i, idea in enumerate(ideas, 1):
-    print(f"Idea {i}: {idea}")
-
+st.write('## Ideas sugeridas:')
+for idea in ideas:
+  st.write('- ' + idea)
